@@ -9,7 +9,7 @@ A number of different human footprint datasets are available ([1](https://www.fr
 ## Google Earth Engine Code
 Before the extractions can happen, you will need to download each year as a tif from the ["Data Records section"](https://figshare.com/articles/figure/An_annual_global_terrestrial_Human_Footprint_dataset_from_2000_to_2018/16571064) in Mu et al 2022, and then upload this as an asset in your [Google Earth Enginge Code Editor](https://code.earthengine.google.com/). 
 
-This code is extracting annual human footprint index for all municipalites in Brazil from 2006 to 2020.
+This code is extracting annual human footprint index for all municipalites in Brazil from 2006 to 2020 and was written by Aly Singleton.
 
 ```javascript
 // load and check the hfp tif from 2000
