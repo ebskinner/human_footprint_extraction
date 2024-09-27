@@ -109,11 +109,42 @@ Export.table.toDrive({
 ## Explaination of key terms in GEE
 
 1. ImageCollection
-An ```javascript ImageCollection ``` is a set of images, often representing a time series of satellite data. In this code, we load individual annual Human Footprint Index (HFI) images for each year from 2000 to 2019 and combine them into an ImageCollection. This structure allows us to handle multiple images more efficiently, especially for operations that need to be applied across all years.
+An ```ImageCollection``` is a set of images, often representing a time series of satellite data. In this code, we load individual annual Human Footprint Index (HFI) images for each year from 2000 to 2019 and combine them into an ```ImageCollection```. This structure allows us to handle multiple images more efficiently, especially for operations that need to be applied across all years.
 
 Why Convert an ImageCollection to an Image?
-When working with ImageCollection, it is sometimes necessary to convert it into a single Image, for example, to export data or reduce regions. By converting it into an Image, we can treat all the layers as separate bands in one file, simplifying further operations like thresholding or calculating statistics.
+When working with ```ImageCollection```, it is sometimes necessary to convert it into a single Image, for example, to export data or reduce regions. By converting it into an ```Image```, we can treat all the layers as separate bands in one file, simplifying further operations like thresholding or calculating statistics.
 
+```
+var hfp_yearly = hfp_yearly.toBands()
+```
+
+2. Image
+An ```Image``` is a single raster image, where each pixel represents some data value, such as the Human Footprint Index. In this script, we load multiple years of HFI data as individual images. When they are combined into an ```ImageCollection```, each year is essentially treated as a new band in the final Image.
+
+3. map() Function
+The ```map()``` function in Earth Engine is used to apply a function to each feature in a ```FeatureCollection``` or each pixel in an ```ImageCollection```. In this code, ```map()``` is used to calculate the area of each municipality by applying the ```calculateArea``` function to every feature in the brazil_municipalities collection.
+
+```
+var areaAddedCollection = brazil_municipalities.map(calculateArea);
+```
+
+4. gte() Function
+```gte()``` stands for "greater than or equal to" and is used to compare pixel values. In this case, it is used to create a binary Image where pixels with a Human Footprint Index greater than or equal to the threshold value (8 in this example) are assigned a value of 1, and all others are assigned 0. This allows for counting the number of pixels exceeding the threshold for each municipality.
+
+```
+var hfp_yearly_threshold_binary = hfp_yearly.gte(threshold);
+```
+
+5. reduceRegions()
+The ```reduceRegions()``` function applies a reducer (like sum, median, etc.) to each feature in a FeatureCollection over the corresponding area of an Image or ImageCollection. In this code, it calculates the median Human Footprint Index for each municipality and the sum of pixels that exceed the threshold within each municipality.
+
+```
+var featureValues = hfp_yearly.reduceRegions({
+  collection: brazil_municipalities,
+  reducer: ee.Reducer.median(), 
+  scale: 1000 
+});
+```
 
 ## References
 1. Gassert, F., Venter, O., Watson, J. E., Brumby, S. P., Mazzariello, J. C., Atkinson, S. C., & Hyde, S. (2023). An operational approach to near real time global high resolution mapping of the terrestrial Human Footprint. Frontiers in Remote Sensing, 4, 1130896.
