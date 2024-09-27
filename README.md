@@ -9,7 +9,7 @@ A number of different human footprint datasets are available ([1](https://www.fr
 ## Google Earth Engine Code
 Before the extractions can happen, you will need to download each year as a tif from the ["Data Records section"](https://figshare.com/articles/figure/An_annual_global_terrestrial_Human_Footprint_dataset_from_2000_to_2018/16571064) in Mu et al 2022, and then upload this as an asset in your [Google Earth Enginge Code Editor](https://code.earthengine.google.com/). 
 
-This code is extracting annual human footprint index for all municipalites in Brazil from 2006 to 2020 and was written by Aly Singleton.
+This code is extracting annual human footprint index for all municipalites in Brazil from 2006 to 2020 and was written by Aly Singleton. In this code we were interested in extracting the number of pixels above 8 (a hypothesized threshold of dengue transmission). 
 
 ```javascript
 // load and check the hfp tif from 2000
@@ -129,14 +129,14 @@ var areaAddedCollection = brazil_municipalities.map(calculateArea);
 ```
 
 4. gte() Function
-```gte()``` stands for "greater than or equal to" and is used to compare pixel values. In this case, it is used to create a binary Image where pixels with a Human Footprint Index greater than or equal to the threshold value (8 in this example) are assigned a value of 1, and all others are assigned 0. This allows for counting the number of pixels exceeding the threshold for each municipality.
+```gte()``` stands for "greater than or equal to" and is used to compare pixel values. In this case, it is used to create a binary ```Image``` where pixels with a Human Footprint Index greater than or equal to the threshold value (8 in this example) are assigned a value of 1, and all others are assigned 0. This allows for counting the number of pixels exceeding the threshold for each municipality.
 
 ```
 var hfp_yearly_threshold_binary = hfp_yearly.gte(threshold);
 ```
 
 5. reduceRegions()
-The ```reduceRegions()``` function applies a reducer (like sum, median, etc.) to each feature in a FeatureCollection over the corresponding area of an Image or ImageCollection. In this code, it calculates the median Human Footprint Index for each municipality and the sum of pixels that exceed the threshold within each municipality.
+The ```reduceRegions()``` function applies a reducer (like sum, median, etc.) to each feature in a ```FeatureCollection``` over the corresponding area of an ```Image``` or ```ImageCollection```. In this code, it calculates the median Human Footprint Index for each municipality and the sum of pixels that exceed the threshold within each municipality.
 
 ```
 var featureValues = hfp_yearly.reduceRegions({
