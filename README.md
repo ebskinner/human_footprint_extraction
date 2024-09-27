@@ -106,6 +106,13 @@ Export.table.toDrive({
   fileFormat: 'CSV'
 });
 ```
+## Explaination of key terms in GEE
+
+1. ImageCollection
+An ```javascript ImageCollection ``` is a set of images, often representing a time series of satellite data. In this code, we load individual annual Human Footprint Index (HFI) images for each year from 2000 to 2019 and combine them into an ImageCollection. This structure allows us to handle multiple images more efficiently, especially for operations that need to be applied across all years.
+
+Why Convert an ImageCollection to an Image?
+When working with ImageCollection, it is sometimes necessary to convert it into a single Image, for example, to export data or reduce regions. By converting it into an Image, we can treat all the layers as separate bands in one file, simplifying further operations like thresholding or calculating statistics.
 
 
 ## References
