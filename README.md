@@ -9,7 +9,9 @@ A number of different human footprint datasets are available ([1](https://www.fr
 ## Google Earth Engine Code
 Before the extractions can happen, you will need to download each year as a tif from the ["Data Records section"](https://figshare.com/articles/figure/An_annual_global_terrestrial_Human_Footprint_dataset_from_2000_to_2018/16571064) in Mu et al 2022, and then upload this as an asset in your [Google Earth Enginge Code Editor](https://code.earthengine.google.com/). 
 
-This code is extracting annual human footprint index for all municipalites in Brazil from 2006 to 2020 and was written by Aly Singleton. In this code we were interested in extracting the number of pixels above 8 (a hypothesized threshold of dengue transmission). 
+This code is extracting annual human footprint index for all municipalites in Brazil from 2006 to 2020 and was written by Aly Singleton. Some things to consider about this code and modify how you see fit for your purposes;
+ -1. The code extracts the median human footprint index for each municipality. This is because some municipalities have a large area, most of which may be forested with a small portion that is urbanised. If we average across that space the highly urban areas may draw the human footprint index up representing agricultural areas, where-as in reality the most common value in the municipality is forested areas (human footprint 4 or less). Depending on your research question, you may also be interested in the maximum, minimum or mean value in a given area. 
+ -2. In this code we were interested in extracting the number of pixels above a human footprint of 8 (a hypothesized threshold of dengue transmission). This is probably not relevant to your research question, but I have left this in so you can see how you might make further calculations or extractions with human footprint in GEE. 
 
 ```javascript
 // load and check the hfp tif from 2000
@@ -57,7 +59,7 @@ hfp_yearly = hfp_yearly.toBands()
 print(hfp_yearly);
 
 //////////////////////////////////////
-// calculate mean hfi for each municipality for each year
+// calculate median hfi for each municipality for each year
 //////////////////////////////////////
 
 var featureValues = hfp_yearly.reduceRegions({
